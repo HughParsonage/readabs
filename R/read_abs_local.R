@@ -45,11 +45,11 @@ read_abs_local <- function(cat_no = NULL,
                            metadata = TRUE){
 
   # Error catching
-  if(is.null(filenames) & is.null(path)){
+  if(is.null(filenames) && is.null(path)){
     stop("You must specify a value to filenames and/or path.")
   }
 
-  if(!is.null(filenames) & class(filenames) != "character") {
+  if(!is.null(filenames) && !is.character(filenames)) {
     stop("if a value is given to `filenames`, it must be specified as a character vector, such as '6202001.xls' or c('6202001.xls', '6202005.xls')")
   }
 
@@ -57,13 +57,15 @@ read_abs_local <- function(cat_no = NULL,
     warning(paste0("`path` not specified.\nLooking for ABS time series files in ", getwd()))
   }
 
-  if(!is.null(cat_no) & !is.character(cat_no)){
+  if(!is.null(cat_no) && !is.character(cat_no)){
     stop("If `cat_no` is specified, it must be a string such as '6202.0'")
   }
 
   if(!is.logical(metadata) || length(metadata) != 1L || is.na(metadata)){
     stop("`metadata` argument must be either TRUE or FALSE")
   }
+
+
 
   # If catalogue number is specifid, that takes precedence
   if(!is.null(cat_no)){
