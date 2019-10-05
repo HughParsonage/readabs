@@ -61,6 +61,10 @@ read_abs_local <- function(cat_no = NULL,
     stop("If `cat_no` is specified, it must be a string such as '6202.0'")
   }
 
+  if(!is.logical(metadata) || length(metadata) != 1L || is.na(metadata)){
+    stop("`metadata` argument must be either TRUE or FALSE")
+  }
+
   # If catalogue number is specifid, that takes precedence
   if(!is.null(cat_no)){
 
@@ -89,10 +93,6 @@ read_abs_local <- function(cat_no = NULL,
       stop(paste0("Could not find any .xls files in path: '", path, "'"))
     }
 
-  }
-
-  if(!is.logical(metadata)){
-    stop("`metadata` argument must be either TRUE or FALSE")
   }
 
   # Create filenames for local ABS time series files
