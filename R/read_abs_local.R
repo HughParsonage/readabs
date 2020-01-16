@@ -42,6 +42,8 @@
 read_abs_local <- function(cat_no = NULL,
                            filenames = NULL,
                            path = Sys.getenv("R_READABS_PATH", unset = tempdir()),
+                           use_fst = TRUE,
+
                            metadata = TRUE){
 
   # Error catching
@@ -65,7 +67,11 @@ read_abs_local <- function(cat_no = NULL,
     stop("`metadata` argument must be either TRUE or FALSE")
   }
 
-
+  # Retrieve cache if available
+  if (is.null(filenames) && isTRUE(use_fst) && fst_available(cat_no, path)) {
+    out <- fst::read_fst(catno2fst(cat_no = cat_no, path = path))
+    return(tibble::as_tibble(out))
+  }
 
   # If catalogue number is specifid, that takes precedence
   if(!is.null(cat_no)){
@@ -99,7 +105,7 @@ read_abs_local <- function(cat_no = NULL,
 
   # Create filenames for local ABS time series files
 
-  filenames <- base::basename(filenames)
+  filenames <- basename(filenames)
 
   # Import data from local spreadsheet(s) to a list
   message("Extracting data from locally-saved spreadsheets")
